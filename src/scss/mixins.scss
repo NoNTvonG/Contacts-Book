@@ -1,0 +1,37 @@
+@mixin card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $clouds;
+  border: 1px solid $clouds;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 2px rgba($concrete, 0.3);
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 5px 2px rgba($concrete, 0.5);
+  }
+}
+
+@mixin card-body{
+  width: 100%;
+}
+@mixin card-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96px;
+  width: 96px;
+}
+@mixin card-title {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  padding: 1rem 0;
+  border-bottom-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+}

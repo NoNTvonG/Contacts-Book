@@ -1,0 +1,59 @@
+/* ~~~~~~~~~~~~ Colors ~~~~~~~~~~~ */
+$milk: #F5F5F5;
+$clouds: #ecf0f1;
+$silver: #bdc3c7;
+$concrete: #95a5a6;
+$asbestos: #7f8c8d;
+$alizarin: #e74c3c;
+$orange: #f39c12;
+$pomegranate: #c0392b;
+$river: #3498db;
+$belize-hole: #2980b9;
+$asphalt: #34495e;
+$midnight: #2c3e50;
+$black: #000000;
+$white: #ffffff;
+
+/* ~~~~~~~~~~ Glass Panel ~~~~~~~~~~ */
+.glass-panel{
+  border-radius: 10px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(3px);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ~~~~~~~~~~ Container ~~~~~~~~~~ */
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 380px) {
+  .container {
+    width: 365px;
+  }
+}
+@media (min-width: 556px) {
+  .container {
+    width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
