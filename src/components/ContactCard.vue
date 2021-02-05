@@ -2,10 +2,7 @@
   <article class="contact-card">
     <!-- Contact option -->
     <div class="option-panel">
-      <div class="edit">
-        <i class="fas fa-edit"></i>
-      </div>
-      <div class="delete">
+      <div class="delete" @click="deleteContact">
         <i class="fas fa-trash-alt"></i>
       </div>
     </div>
@@ -15,12 +12,17 @@
       :style="{ backgroundColor: randomColor(user.id) }"
     >
       <span>{{ user.fName.substr(0, 1) }}</span>
-      <span>{{ user.lName.substr(0, 1) }}</span>
+      <span>{{ user.sName.substr(0, 1) }}</span>
     </div>
     <!-- Contact Name -->
     <div class="card-body">
-      <p class="card-title">{{ user.fName }} {{ user.lName }}</p>
+      <p class="card-title">{{ user.fName }} {{ user.sName }}</p>
     </div>
+    <!-- Contact Url -->
+    <router-link
+      :to="{ name: 'ContactDetale', params: { id: user.id } }"
+      class="card-url"
+    />
   </article>
 </template>
 
@@ -34,6 +36,11 @@ export default {
     };
   },
   methods: {
+    deleteContact() {
+      if (confirm("are you sure?")) {
+        this.$store.dispatch("DELETE_CONTACT", this.user.id);
+      }
+    },
     randomColor(id) {
       const r = () => Math.floor(256 * Math.random());
 
@@ -51,6 +58,7 @@ export default {
   @include card;
   position: relative;
   overflow: hidden;
+  z-index: 3;
 
   &:hover {
     transform: translateY(-5px);
@@ -60,25 +68,19 @@ export default {
     top: 0px;
     opacity: 1;
   }
+  .card-url {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
   .option-panel {
     position: absolute;
-    display: flex;
     margin: 5px 5px 0 0;
     top: -50px;
     opacity: 0;
     right: 0;
     transition: all 0.3s;
-
-    .edit {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 35px;
-      width: 35px;
-      background-color: $orange;
-      margin-right: 5px;
-      border-radius: 10px;
-    }
+    z-index: 25;
 
     .delete {
       display: flex;

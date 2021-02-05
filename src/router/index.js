@@ -10,21 +10,11 @@ const routes = [
     component: () => import("../views/Contacts.vue")
   },
   {
-    path: "/contact",
-    name: "Contact",
-    component: () => import("../views/Contact.vue")
+    path: "/contact/:id",
+    name: "ContactDetale",
+    component: () => import("../views/ContactDetale.vue"),
+    params: true
   }
-  // {
-  //   path: "/",
-  //   name: "Home",
-  //   component: Home
-  // },
-  // {
-  //   path: "/about",
-  //   name: "About",
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/About.vue")
-  // }
 ];
 
 const router = new VueRouter({

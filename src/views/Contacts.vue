@@ -2,27 +2,40 @@
   <div id="contacts">
     <div class="container">
       <div class="contacts-list">
-        <AddNewContact />
+        <NewContact @showAddNewContact="showAddNewContact" />
         <ContactCard v-for="user in users" :key="user.id" :user="user" />
       </div>
     </div>
+    <AddNewContact
+      @closeAddNewContact="showAddNewContact"
+      v-if="showaddNewContact"
+    />
   </div>
 </template>
 
 <script>
-import AddNewContact from "../components/AddNewContact";
+import NewContact from "../components/NewContact";
 import ContactCard from "../components/ContactCard";
+import AddNewContact from "../components/AddNewContact.vue";
 
 export default {
   name: "Contacts",
   components: {
-    AddNewContact,
-    ContactCard
+    NewContact,
+    ContactCard,
+    AddNewContact
   },
   data() {
     return {
+      popupVisible: false,
+      showaddNewContact: false,
       color: "#" + ((Math.random() * 0xffffff) << 0).toString(16)
     };
+  },
+  methods: {
+    showAddNewContact() {
+      this.showaddNewContact = !this.showaddNewContact;
+    }
   },
   computed: {
     users() {
