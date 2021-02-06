@@ -54,10 +54,7 @@ export default {
     grid-auto-rows: 250px;
     grid-gap: 15px;
     justify-content: center;
-    padding: 30px 0;
-    background-color: $milk;
-    min-height: calc(100vh - 60px - 60px);
-    box-shadow: 0px 0px 5px 0px $silver;
+    @include sub-container;
   }
 }
 </style>

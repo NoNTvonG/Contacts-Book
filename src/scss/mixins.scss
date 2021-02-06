@@ -19,6 +19,7 @@
 @mixin card-body{
   width: 100%;
 }
+
 @mixin card-icon{
   display: flex;
   align-items: center;
@@ -26,6 +27,7 @@
   height: 96px;
   width: 96px;
 }
+
 @mixin card-title {
   font-size: 20px;
   font-weight: 700;
@@ -35,4 +37,11 @@
   border-bottom-left-radius: 9px;
   border-bottom-right-radius: 9px;
   color: $midnight;
+}
+
+@mixin sub-container {
+  background-color: $milk;
+  padding: 30px 0;
+  min-height: calc(100vh - 60px - 60px);
+  box-shadow: 0px 0px 5px 0px $silver;
 }

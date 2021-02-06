@@ -66,7 +66,17 @@ export default {
     saveContact() {
       this.$store.dispatch("SAVE_NEW_CONTACT", this.user);
       this.closeAddNewContact();
+    },
+    randomColor(id) {
+      const r = () => Math.floor(256 * Math.random());
+      return (
+        this.colorCache[id] ||
+        (this.colorCache[id] = `rgb(${r()}, ${r()}, ${r()})`)
+      );
     }
+  },
+  mounted: function() {
+    this.randomColor(this.user.id);
   }
 };
 </script>

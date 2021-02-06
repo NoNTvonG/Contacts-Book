@@ -6,8 +6,36 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     users: [
-      { id: 1, fName: "Roman", sName: "Jin" },
-      { id: 2, fName: "Liliia", sName: "Lawasz" },
+      {
+        id: 1,
+        fName: "Roman",
+        sName: "Jin",
+        contacts: [
+          {
+            contactName: "tel",
+            contactValue: "+3806425197"
+          },
+          {
+            contactName: "email",
+            contactValue: "testt@gmail.com"
+          }
+        ]
+      },
+      {
+        id: 2,
+        fName: "Liliia",
+        sName: "Lawasz",
+        contacts: [
+          {
+            contactName: "tel",
+            contactValue: "+346745743452"
+          },
+          {
+            contactName: "email",
+            contactValue: "lawasz228@mail.bu"
+          }
+        ]
+      },
       { id: 3, fName: "Vasia", sName: "Pupkin" },
       { id: 4, fName: "Voitek", sName: "Kiebab" },
       { id: 5, fName: "Panalia", sName: "Surafyn" },
@@ -16,6 +44,7 @@ export default new Vuex.Store({
   },
   mutations: {
     save_new_contact(state, value) {
+      // value.id = Date.now();
       state.users.push(value);
     },
     deleteContact(state, id) {
