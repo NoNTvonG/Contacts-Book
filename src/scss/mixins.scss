@@ -45,3 +45,56 @@
   min-height: calc(100vh - 60px - 60px);
   box-shadow: 0px 0px 5px 0px $silver;
 }
+
+@mixin btn-style {
+  height: 30px;
+  min-width: auto;
+  padding: 0 20px;
+  color: $concrete;
+  background-color: transparent;
+  border: 1px solid $concrete;
+  border-radius: 25px;
+  outline: none;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &.btn-hover-green{
+    color: $concrete;
+    transition: .3s;
+  
+    &:hover {
+      color: $emerald;
+      border-color: $emerald;
+    }
+  }
+
+  &.btn-hover-red{
+    color: $concrete;
+    transition: .3s;
+  
+    &:hover {
+      color: $alizarin;
+      border-color: $alizarin;
+    }
+  }
+
+  &.btn-hover-yellow{
+    color: $concrete;
+    transition: .3s;
+  
+    &:hover {
+      color: $sun;
+      border-color: $sun;
+    }
+  }
+  
+  &.btn-hover-blue{
+    color: $concrete;
+    transition: .3s;
+  
+    &:hover {
+      color: $river;
+      border-color: $river;
+    }
+  }
+}

@@ -10,6 +10,7 @@ export default new Vuex.Store({
         id: 1,
         fName: "Roman",
         sName: "Jin",
+        color: "67b482",
         contacts: [
           {
             contactName: "tel",
@@ -18,6 +19,11 @@ export default new Vuex.Store({
           {
             contactName: "email",
             contactValue: "testt@gmail.com"
+          },
+          {
+            contactName: "Adres",
+            contactValue:
+              "Rzeszów ul.Starzyńskiego 2/78 35-508 tdcfyvgubhnijmok,l tfvygbuhn rtyvgbuhn trfytguhkjni hhtjyhghbkh ytghbjbhvujbhjgu jhgbjy7u"
           }
         ]
       },
@@ -44,8 +50,11 @@ export default new Vuex.Store({
   },
   mutations: {
     save_new_contact(state, value) {
-      // value.id = Date.now();
-      state.users.push(value);
+      const color = {
+        color: Math.floor(Math.random() * 16777215).toString(16)
+      };
+      const newContact = { ...value, ...color };
+      state.users.push(newContact);
     },
     deleteContact(state, id) {
       state.users = state.users.filter(user => user.id != id);
@@ -62,7 +71,7 @@ export default new Vuex.Store({
   getters: {
     getUsers: s => {
       // eslint-disable-next-line no-unused-vars
-      return s.users.map(({ color, ...user }) => user); // Все окрім color
+      return s.users.map(({ contacts, ...user }) => user); // Все окрім contacts
     },
     getSelectedUser: s => id => {
       return s.users.find(user => user.id === id);

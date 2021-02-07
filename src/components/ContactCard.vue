@@ -7,10 +7,7 @@
       </div>
     </div>
     <!-- Contact logo -->
-    <div
-      class="contact-icon"
-      :style="{ backgroundColor: randomColor(user.id) }"
-    >
+    <div class="contact-icon" :style="{ backgroundColor: '#' + user.color }">
       <span>{{ user.fName.substr(0, 1) }}</span>
       <span>{{ user.sName.substr(0, 1) }}</span>
     </div>
@@ -31,23 +28,13 @@ export default {
   name: "ContactCard",
   props: ["user"],
   data() {
-    return {
-      colorCache: {}
-    };
+    return {};
   },
   methods: {
     deleteContact() {
       if (confirm("are you sure?")) {
         this.$store.dispatch("DELETE_CONTACT", this.user.id);
       }
-    },
-    randomColor(id) {
-      const r = () => Math.floor(256 * Math.random());
-
-      return (
-        this.colorCache[id] ||
-        (this.colorCache[id] = `rgb(${r()}, ${r()}, ${r()})`)
-      );
     }
   }
 };
@@ -68,11 +55,13 @@ export default {
     top: 0px;
     opacity: 1;
   }
+
   .card-url {
     position: absolute;
     width: 100%;
     height: 100%;
   }
+
   .option-panel {
     position: absolute;
     margin: 5px 5px 0 0;
@@ -88,6 +77,7 @@ export default {
       justify-content: center;
       height: 35px;
       width: 35px;
+      color: $clouds;
       background-color: $alizarin;
       border-radius: 10px;
     }

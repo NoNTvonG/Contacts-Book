@@ -6,6 +6,7 @@ $concrete: #95a5a6;
 $asbestos: #7f8c8d;
 $alizarin: #e74c3c;
 $orange: #f39c12;
+$sun: #f1c40f;
 $emerald: #2ecc71;
 $pomegranate: #c0392b;
 $river: #3498db;
@@ -15,16 +16,8 @@ $midnight: #2c3e50;
 $black: #000000;
 $white: #ffffff;
 
-/* ~~~~~~~~~~ Glass Panel ~~~~~~~~~~ */
-.glass-panel{
-  border-radius: 10px;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(3px);
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-}
+/* ~~~~~~~~~~ Buttons ~~~~~~~~~~ */
+
 
 /* ~~~~~~~~~~ Container ~~~~~~~~~~ */
 .container {

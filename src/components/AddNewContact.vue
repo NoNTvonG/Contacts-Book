@@ -1,6 +1,6 @@
 <template>
-  <div class="add-new-contact">
-    <div class="new-contact-panel">
+  <div class="add-new-contact" ref="add-new-contact">
+    <div class="new-contact-wrapper">
       <div class="contact-header">
         <h2>Add new contact</h2>
       </div>
@@ -30,13 +30,18 @@
           required
           autocomplete="off"
           placeholder="tel."
-          v-model="user.tel"
+          v-model="user.contacts[0].contactValue"
         />
       </div>
       <div class="contact-footer">
-        <input class="save" type="button" value="Save" @click="saveContact" />
         <input
-          class="close"
+          class="btn-hover-green"
+          type="button"
+          value="Save"
+          @click="saveContact"
+        />
+        <input
+          class="btn-hover-red"
           type="button"
           value="Close"
           @click="closeAddNewContact"
@@ -55,7 +60,12 @@ export default {
         id: Date.now(),
         fName: "",
         sName: "",
-        tel: ""
+        contacts: [
+          {
+            contactName: "tel",
+            contactValue: ""
+          }
+        ]
       }
     };
   },
@@ -64,19 +74,24 @@ export default {
       this.$emit("closeAddNewContact");
     },
     saveContact() {
-      this.$store.dispatch("SAVE_NEW_CONTACT", this.user);
-      this.closeAddNewContact();
-    },
-    randomColor(id) {
-      const r = () => Math.floor(256 * Math.random());
-      return (
-        this.colorCache[id] ||
-        (this.colorCache[id] = `rgb(${r()}, ${r()}, ${r()})`)
-      );
+      if (
+        (this.user.fName !== "") & (this.user.sName !== "") &&
+        this.user.contacts[0].contactValue !== ""
+      ) {
+        this.$store.dispatch("SAVE_NEW_CONTACT", this.user);
+        this.closeAddNewContact();
+      } else {
+        alert("Please fill in all the fields.");
+      }
     }
   },
-  mounted: function() {
-    this.randomColor(this.user.id);
+  mounted() {
+    let vm = this;
+    document.addEventListener("click", function(item) {
+      if (item.target === vm.$refs["add-new-contact"]) {
+        vm.closeAddNewContact();
+      }
+    });
   }
 };
 </script>
@@ -94,7 +109,7 @@ export default {
   background-color: rgba($midnight, 0.8);
   z-index: 999;
 
-  .new-contact-panel {
+  .new-contact-wrapper {
     display: flex;
     flex-direction: column;
     width: 300px;
@@ -138,27 +153,7 @@ export default {
       justify-content: space-evenly;
       margin-top: 20px;
       input {
-        height: 30px;
-        width: 80px;
-        font-size: 20px;
-        color: $concrete;
-        border: 1px solid $concrete;
-        border-radius: 25px;
-        outline: none;
-        transition: 0.3s;
-        cursor: pointer;
-      }
-      .save {
-        &:hover {
-          border-color: $emerald;
-          color: $emerald;
-        }
-      }
-      .close {
-        &:hover {
-          border-color: $alizarin;
-          color: $alizarin;
-        }
+        @include btn-style;
       }
     }
   }
