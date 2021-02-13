@@ -1,49 +1,40 @@
 <template>
-  <div class="add-new-contact" ref="popup">
-    <div class="new-contact-wrapper">
-      <div class="contact-header">
-        <h2>Add new contact</h2>
+  <div class="add-contact" ref="popup">
+    <div class="add-contact-wrapper">
+      <div class="add-contact-header">
+        <h2>Add new info</h2>
       </div>
-      <form @submit.prevent class="contact-body">
+      <form @submit.prevent class="add-contact-body">
         <input
           type="text"
-          name="fName"
-          id="fName"
+          name="title"
+          id="title"
           required
           autocomplete="off"
-          placeholder="Name"
-          v-model="user.fName"
+          placeholder="Please write title"
+          v-model="contactName"
         />
         <input
           type="text"
-          name="sName"
-          id="sName"
+          name="description"
+          id="description"
           required
           autocomplete="off"
-          placeholder="Surname"
-          v-model="user.sName"
+          placeholder="Please write description"
+          v-model="contactValue"
         />
-        <input
-          type="text"
-          name="tel"
-          id="tel"
-          required
-          autocomplete="off"
-          placeholder="tel."
-          v-model="user.contacts[0].contactValue"
-        />
-        <div class="contact-footer">
+        <div class="add-contact-footer">
           <input
             class="btn-hover-green"
             type="submit"
             value="Save"
-            @click="saveContact"
+            @click="saveNewInfo"
           />
           <input
             class="btn-hover-red"
             type="button"
-            value="Close"
-            @click="closeAddNewContact"
+            value="Back"
+            @click="showAddNewInfo"
           />
         </div>
       </form>
@@ -53,33 +44,25 @@
 
 <script>
 export default {
-  name: "AddNewContact",
+  props: ["cId"],
   data() {
     return {
-      user: {
-        id: Date.now(),
-        fName: "",
-        sName: "",
-        contacts: [
-          {
-            contactName: "tel",
-            contactValue: ""
-          }
-        ]
-      }
+      contactName: "",
+      contactValue: ""
     };
   },
   methods: {
-    closeAddNewContact() {
-      this.$emit("closeAddNewContact");
+    showAddNewInfo() {
+      this.$emit("showAddNewInfo");
     },
-    saveContact() {
-      if (
-        (this.user.fName !== "") & (this.user.sName !== "") &&
-        this.user.contacts[0].contactValue !== ""
-      ) {
-        this.$store.dispatch("SAVE_NEW_CONTACT", this.user);
-        this.closeAddNewContact();
+    saveNewInfo() {
+      if (this.contactName !== "" && this.contactValue !== "") {
+        this.$store.dispatch("ADD_NEW_CONTACT_IFNO", {
+          cId: this.cId,
+          contactName: this.contactName,
+          contactValue: this.contactValue
+        });
+        this.showAddNewInfo();
       }
     }
   },
@@ -87,7 +70,7 @@ export default {
     let vm = this;
     document.addEventListener("click", function(item) {
       if (item.target === vm.$refs["popup"]) {
-        vm.closeAddNewContact();
+        vm.showAddNewInfo();
       }
     });
   }
@@ -95,7 +78,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.add-new-contact {
+.add-contact {
   position: fixed;
   top: 0;
   left: 0;
@@ -107,14 +90,14 @@ export default {
   background-color: rgba($midnight, 0.8);
   z-index: 999;
 
-  .new-contact-wrapper {
+  .add-contact-wrapper {
+    width: 300px;
     display: flex;
     flex-direction: column;
-    width: 300px;
     background-color: $clouds;
     border-radius: 10px;
 
-    .contact-header {
+    .add-contact-header {
       text-align: center;
       background-color: $river;
       height: 50px;
@@ -126,17 +109,17 @@ export default {
         line-height: 50px;
       }
     }
-    .contact-body {
+    .add-contact-body {
       display: flex;
       flex-direction: column;
       align-items: center;
       @include input-text-style;
 
-      .contact-footer {
+      .add-contact-footer {
         display: flex;
         justify-content: space-evenly;
-        margin: 15px 0;
         width: 100%;
+        margin: 15px 0;
         input {
           @include btn-style;
         }

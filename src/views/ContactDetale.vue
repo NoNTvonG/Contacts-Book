@@ -44,7 +44,10 @@
             <span class="contact-detile-title-name">Contact information</span>
           </div>
           <div class="contact-detile-body">
-            <table class="contact-detile-element" v-if="userInfo.contacts">
+            <table
+              class="contact-detile-element"
+              v-if="userInfo.contacts.length !== 0"
+            >
               <tbody>
                 <tr v-for="(userContact, uId) in userInfo.contacts" :key="uId">
                   <td>{{ userContact.contactName }}</td>
@@ -52,12 +55,17 @@
                   <td
                     v-if="editStatus"
                     class="contact-detile-element-option icon-edit"
+                    @click="
+                      showEditInfo();
+                      selectInformation(uId);
+                    "
                   >
                     <i class="fas fa-pencil-alt"></i>
                   </td>
                   <td
-                    v-if="editStatus"
                     class="contact-detile-element-option icon-delete"
+                    v-if="editStatus"
+                    @click="deleteOneContactInfo(uId)"
                   >
                     <i class="fas fa-trash-alt"></i>
                   </td>
@@ -68,25 +76,41 @@
               <span>Сontact information is empty!</span>
             </div>
           </div>
-          <div v-if="editStatus" class="add-new-row">
+          <div class="add-new-row" v-if="!editStatus" @click="showAddNewInfo">
             <i class="fas fa-plus"></i>
           </div>
         </div>
       </div>
     </div>
-    <EditContact v-if="!userInfo" />
+    <AddNewInfo
+      :cId="userInfo.id"
+      @showAddNewInfo="showAddNewInfo"
+      v-if="addNewInfoStatus"
+    />
+    <EditInfo
+      :cId="userInfo.id"
+      :selectedInfo="selectedInformation"
+      @showEditInfo="showEditInfo"
+      v-if="editInfoStatus"
+    />
   </div>
 </template>
 
 <script>
-import EditContact from "../components/EditContact.vue";
+import AddNewInfo from "../components/AddNewInfo.vue";
+import EditInfo from "../components/EditInfo.vue";
 export default {
-  components: { EditContact },
+  components: { AddNewInfo, EditInfo },
   name: "ContactDetale",
   data() {
     return {
       userInfo: null,
-      editStatus: false
+      editStatus: false,
+      addNewInfoStatus: false,
+      editInfoStatus: false,
+      infoDate: [],
+      infoDataBackup: [],
+      selectedInformation: ""
     };
   },
   methods: {
@@ -98,6 +122,23 @@ export default {
     },
     cancelEditingContact() {
       this.editStatus = false;
+    },
+    showAddNewInfo() {
+      this.addNewInfoStatus = !this.addNewInfoStatus;
+    },
+    showEditInfo() {
+      this.editInfoStatus = !this.editInfoStatus;
+    },
+    deleteOneContactInfo(id) {
+      if (confirm("Are you sure you want to delete this information?")) {
+        this.$store.dispatch("DELETE_ONE_CONTACT_INFO", {
+          cId: this.userInfo.id,
+          infoId: id
+        });
+      }
+    },
+    selectInformation(id) {
+      this.selectedInformation = id;
     }
   },
   created() {
