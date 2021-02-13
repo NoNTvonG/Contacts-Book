@@ -2,10 +2,13 @@
   <div id="contacts">
     <div class="container">
       <div class="contacts-list">
+        <!-- Button to add a new contact. Stylized for all cards -->
         <NewContact @showAddNewContact="showAddNewContact" />
+        <!-- List of all available contacts -->
         <ContactCard v-for="user in users" :key="user.id" :user="user" />
       </div>
     </div>
+    <!-- Pop-up to add a new contact -->
     <AddNewContact
       @closeAddNewContact="showAddNewContact"
       v-if="showaddNewContact"

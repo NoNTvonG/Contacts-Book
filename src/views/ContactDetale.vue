@@ -15,29 +15,32 @@
             <h2 class="contact-name">
               {{ userInfo.fName + " " + userInfo.sName }}
             </h2>
-            <input
-              v-if="!editStatus"
-              class="contact-edit btn-hover-blue"
-              type="button"
-              value="Edit contact"
-              @click="startEditingContact"
-            />
-            <div v-if="editStatus" class="contact-option-buttons">
+            <transition name="fade" mode="out-in">
               <input
-                class="contact-edit btn-hover-green"
+                v-if="!editStatus"
+                class="contact-edit btn-hover-blue"
                 type="button"
-                value="Save"
-                @click="saveEditingContact"
+                value="Edit contact"
+                @click="showEditingContact"
               />
-              <input
-                class="contact-edit btn-hover-red"
-                type="button"
-                value="Cancel"
-                @click="cancelEditingContact"
-              />
-            </div>
+              <div v-if="editStatus" class="contact-option-buttons">
+                <input
+                  class="contact-edit btn-hover-green"
+                  type="button"
+                  value="Save"
+                  @click="hideEditingContact(), saveData()"
+                />
+                <input
+                  class="contact-edit btn-hover-red"
+                  type="button"
+                  value="Cancel"
+                  @click="hideEditingContact(), cancelEditContact()"
+                />
+              </div>
+            </transition>
           </div>
         </div>
+
         <!-- Contact Inpormation Panel -->
         <div class="contact-detile">
           <div class="contact-detile-title">
@@ -48,49 +51,63 @@
               class="contact-detile-element"
               v-if="userInfo.contacts.length !== 0"
             >
+              <!-- Table with contact information -->
               <tbody>
                 <tr v-for="(userContact, uId) in userInfo.contacts" :key="uId">
                   <td>{{ userContact.contactName }}</td>
                   <td>{{ userContact.contactValue }}</td>
-                  <td
-                    v-if="editStatus"
-                    class="contact-detile-element-option icon-edit"
-                    @click="
-                      showEditInfo();
-                      selectInformation(uId);
-                    "
-                  >
-                    <i class="fas fa-pencil-alt"></i>
-                  </td>
-                  <td
-                    class="contact-detile-element-option icon-delete"
-                    v-if="editStatus"
-                    @click="deleteOneContactInfo(uId)"
-                  >
-                    <i class="fas fa-trash-alt"></i>
-                  </td>
+                  <!-- Button for editing this or that information -->
+                  <transition name="blop">
+                    <td
+                      v-if="editStatus"
+                      class="contact-detile-element-option icon-edit"
+                      @click="
+                        showEditInfo();
+                        selectInformation(uId);
+                      "
+                    >
+                      <i class="fas fa-pencil-alt"></i>
+                    </td>
+                  </transition>
+                  <!-- Button for deleting this or that information -->
+                  <transition name="blop">
+                    <td
+                      class="contact-detile-element-option icon-delete"
+                      v-if="editStatus"
+                      @click="deleteData(uId)"
+                    >
+                      <i class="fas fa-trash-alt"></i>
+                    </td>
+                  </transition>
                 </tr>
               </tbody>
             </table>
+            <!-- If the contact information is empty, display the following information -->
             <div class="contact-detile-empty" v-else>
               <span>Сontact information is empty!</span>
             </div>
           </div>
-          <div class="add-new-row" v-if="!editStatus" @click="showAddNewInfo">
-            <i class="fas fa-plus"></i>
-          </div>
+          <!-- Button for adding new information -->
+          <transition name="blop">
+            <div class="add-new-row" v-if="!editStatus" @click="showAddNewInfo">
+              <i class="fas fa-plus"></i>
+            </div>
+          </transition>
         </div>
       </div>
     </div>
+    <!-- Pop-up to add a new contact information -->
     <AddNewInfo
       :cId="userInfo.id"
       @showAddNewInfo="showAddNewInfo"
       v-if="addNewInfoStatus"
     />
+    <!-- Pop-up to edit contact information -->
     <EditInfo
       :cId="userInfo.id"
-      :selectedInfo="selectedInformation"
+      :selectedInfoId="selectedInformation"
       @showEditInfo="showEditInfo"
+      @editDataInfo="editData"
       v-if="editInfoStatus"
     />
   </div>
@@ -105,42 +122,57 @@ export default {
   data() {
     return {
       userInfo: null,
+      userInfoBackup: null,
       editStatus: false,
       addNewInfoStatus: false,
-      editInfoStatus: false,
-      infoDate: [],
-      infoDataBackup: [],
-      selectedInformation: ""
+      editInfoStatus: false
     };
   },
   methods: {
-    startEditingContact() {
+    // Pop-up function to edit the selected information. And creating a backup
+    showEditingContact() {
+      this.userInfoBackup = JSON.parse(JSON.stringify(this.userInfo.contacts));
       this.editStatus = true;
     },
-    saveEditingContact() {
+    // Function exit editing
+    hideEditingContact() {
       this.editStatus = false;
     },
-    cancelEditingContact() {
-      this.editStatus = false;
+    // If there have been changes in the contact but they do not need to be recorded
+    cancelEditContact() {
+      if (this.userInfo.contacts !== this.userInfoBackup) {
+        this.userInfo.contacts = this.userInfoBackup;
+      }
     },
+    // Function that shows a panel for adding contact information
     showAddNewInfo() {
       this.addNewInfoStatus = !this.addNewInfoStatus;
     },
+    // Function that shows the contact information editing panel
     showEditInfo() {
       this.editInfoStatus = !this.editInfoStatus;
     },
-    deleteOneContactInfo(id) {
-      if (confirm("Are you sure you want to delete this information?")) {
-        this.$store.dispatch("DELETE_ONE_CONTACT_INFO", {
-          cId: this.userInfo.id,
-          infoId: id
-        });
-      }
-    },
+    // Function that takes the id of the selected information for its further action
     selectInformation(id) {
       this.selectedInformation = id;
+    },
+    // Function that deletes the selected contact information
+    deleteData(id) {
+      this.userInfo.contacts.splice(id, 1);
+    },
+    // Function that edits contact information
+    editData(data) {
+      this.userInfo.contacts[data.selectedInfoId] = data.editData;
+    },
+    // Call function (SAVE_NEW_DATA) from VueX
+    saveData() {
+      this.$store.dispatch("SAVE_NEW_DATA", {
+        uId: this.userInfo.id,
+        contacts: this.userInfo.contacts
+      });
     }
   },
+  // When creating a page, a request is made to Vue and the data of the selected user is pulled up
   created() {
     this.userInfo = this.$store.getters.getSelectedUser(
       parseInt(this.$route.params.id)

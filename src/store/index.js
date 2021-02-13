@@ -5,79 +5,58 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    users: [
-      {
-        id: 1,
-        fName: "Roman",
-        sName: "Jin",
-        color: "67b482",
-        contacts: [
-          {
-            contactName: "tel",
-            contactValue: "+44562153264"
-          },
-          {
-            contactName: "email",
-            contactValue: "testt@gmail.com"
-          }
-        ],
-        history: []
-      },
-      {
-        id: 2,
-        fName: "Liliia",
-        sName: "Lawasz",
-        contacts: [
-          {
-            contactName: "tel",
-            contactValue: "+346745743452"
-          },
-          {
-            contactName: "email",
-            contactValue: "lawasz228@mail.gg"
-          }
-        ]
-      },
-      {
-        id: 3,
-        fName: "Vasia",
-        sName: "Pupkin",
-        color: "",
-        contacts: [],
-        history: []
-      },
-      {
-        id: 4,
-        fName: "Voitek",
-        sName: "Kiebab",
-        color: "",
-        contacts: [],
-        history: []
-      },
-      {
-        id: 5,
-        fName: "Panalia",
-        sName: "Surafyn",
-        color: "",
-        contacts: [],
-        history: []
-      },
-      {
-        id: 6,
-        fName: "Juzik",
-        sName: "Juzikowicz",
-        color: "",
-        contacts: [],
-        history: []
-      }
-    ]
+    users: JSON.parse(localStorage.getItem("users") || "[]")
+    // users: [
+    // {
+    //   id: 1,
+    //   fName: "Roman",
+    //   sName: "Test",
+    //   color: "67b482",
+    //   contacts: [
+    //     {
+    //       contactName: "tel",
+    //       contactValue: "+44562153264"
+    //     },
+    //     {
+    //       contactName: "email",
+    //       contactValue: "testt@gmail.com"
+    //     }
+    //   ]
+    // },
+    //   {
+    //     id: 2,
+    //     fName: "Liliia",
+    //     sName: "Lawasz",
+    //     color: "fcd5ce",
+    //     contacts: [
+    //       {
+    //         contactName: "tel",
+    //         contactValue: "+346745743452"
+    //       },
+    //       {
+    //         contactName: "email",
+    //         contactValue: "lawasz228@mail.gg"
+    //       }
+    //     ]
+    //   }
+    // ]
   },
   mutations: {
     save_new_contact(state, value) {
       state.users.push(value);
+      localStorage.setItem("users", JSON.stringify(state.users));
     },
     delete_contact(state, id) {
       state.users = state.users.filter(user => user.id != id);
+      localStorage.setItem("users", JSON.stringify(state.users));
+    },
+    save_new_data(state, value) {
+      state.users.forEach(u => {
+        if (u.id === value.uId) {
+          u.contacts = value.contacts;
+        }
+      });
+      localStorage.setItem("users", JSON.stringify(state.users));
     },
     add_new_contact_info(state, value) {
       state.users.forEach(u => {
@@ -88,26 +67,7 @@ export default new Vuex.Store({
           });
         }
       });
-      // const user = state.users.find(user => user.id === value.cId);
-      // user.contacts.push({
-      //   contactName: value.contactName,
-      //   contactValue: value.contactValue
-      // });
-    },
-    delete_one_contact_info(state, value) {
-      state.users.forEach(u => {
-        if (u.id === value.cId) {
-          u.contacts.splice(value.infoId, 1);
-        }
-      });
-    },
-    edit_one_contact_info(state, value) {
-      state.users.forEach(u => {
-        if (u.id === value.userId) {
-          u.contacts[value.infoId].contactName = value.contactName;
-          u.contacts[value.infoId].contactValue = value.contactValue;
-        }
-      });
+      localStorage.setItem("users", JSON.stringify(state.users));
     }
   },
   actions: {
@@ -121,14 +81,11 @@ export default new Vuex.Store({
     DELETE_CONTACT({ commit }, id) {
       commit("delete_contact", id);
     },
+    SAVE_NEW_DATA({ commit }, value) {
+      commit("save_new_data", value);
+    },
     ADD_NEW_CONTACT_IFNO({ commit }, value) {
       commit("add_new_contact_info", value);
-    },
-    DELETE_ONE_CONTACT_INFO({ commit }, value) {
-      commit("delete_one_contact_info", value);
-    },
-    EDIT_ONE_CONTACT_INFO({ commit }, value) {
-      commit("edit_one_contact_info", value);
     }
   },
   getters: {

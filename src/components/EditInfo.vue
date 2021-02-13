@@ -4,7 +4,8 @@
       <div class="edit-contact-header">
         <h2>Edit info</h2>
       </div>
-      <form @submit.prevent class="edit-contact-body">
+      <!-- Contact information editing form -->
+      <div class="edit-contact-body">
         <input
           type="text"
           name="title"
@@ -28,7 +29,7 @@
             class="btn-hover-green"
             type="submit"
             value="Save"
-            @click="editOneContactInfo"
+            @click="editData"
           />
           <input
             class="btn-hover-red"
@@ -37,14 +38,14 @@
             @click="showEditInfo"
           />
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["cId", "selectedInfo"],
+  props: ["cId", "selectedInfoId"],
   data() {
     return {
       contactName: "",
@@ -57,16 +58,16 @@ export default {
         this.$emit("showEditInfo");
       }
     },
-    editOneContactInfo() {
-      this.$store.dispatch("EDIT_ONE_CONTACT_INFO", {
-        userId: this.cId,
-        infoId: this.selectedInfo,
-        contactName: this.contactName,
-        contactValue: this.contactValue
+    // Format and transmit information to a higher level
+    editData() {
+      this.$emit("editDataInfo", {
+        selectedInfoId: this.selectedInfoId,
+        editData: {
+          contactName: this.contactName,
+          contactValue: this.contactValue
+        }
       });
-      if (this.contactName !== "" && this.contactValue !== "") {
-        this.$emit("showEditInfo");
-      }
+      this.$emit("showEditInfo");
     }
   }
 };

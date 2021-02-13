@@ -4,6 +4,7 @@
       <div class="contact-header">
         <h2>Add new contact</h2>
       </div>
+      <!-- Form of adding a new contact -->
       <form @submit.prevent class="contact-body">
         <input
           type="text"
@@ -73,6 +74,7 @@ export default {
     closeAddNewContact() {
       this.$emit("closeAddNewContact");
     },
+    // Check and call function (SAVE_NEW_CONTACT) from VueX
     saveContact() {
       if (
         (this.user.fName !== "") & (this.user.sName !== "") &&

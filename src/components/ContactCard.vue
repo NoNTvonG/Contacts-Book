@@ -31,6 +31,7 @@ export default {
     return {};
   },
   methods: {
+    // Confirm action and call (DELETE_CONTACT) function from VueX
     deleteContact() {
       if (confirm("are you sure?")) {
         this.$store.dispatch("DELETE_CONTACT", this.user.id);

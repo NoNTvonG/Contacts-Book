@@ -4,6 +4,7 @@
       <div class="add-contact-header">
         <h2>Add new info</h2>
       </div>
+      <!-- Form of adding a new contact information -->
       <form @submit.prevent class="add-contact-body">
         <input
           type="text"
@@ -55,6 +56,7 @@ export default {
     showAddNewInfo() {
       this.$emit("showAddNewInfo");
     },
+    // Check and call function (ADD_NEW_CONTACT_IFNO) from VueX
     saveNewInfo() {
       if (this.contactName !== "" && this.contactValue !== "") {
         this.$store.dispatch("ADD_NEW_CONTACT_IFNO", {

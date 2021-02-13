@@ -51,3 +51,53 @@ $white: #ffffff;
     width: 1170px;
   }
 }
+//  vue transition
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: 0.3s ease;
+}
+.page-fade-enter {
+  opacity: 0;
+}
+.page-fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-enter {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+.fade-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+.blop-enter-active{
+  animation: bounce-in .5s;
+}
+.blop-leave-active {
+  transition: all 0.3s ease;
+}
+.blop-enter {
+    opacity: 0;
+}
+.blop-leave-to {
+  transform: scale(0);
+  opacity: 0;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

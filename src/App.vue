@@ -3,7 +3,9 @@
     <div id="nav">
       <router-link to="/">Contact <span> Book </span></router-link>
     </div>
-    <router-view />
+    <transition name="page-fade" mode="out-in">
+      <router-view />
+    </transition>
   </div>
 </template>
 
